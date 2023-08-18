@@ -26,11 +26,4 @@ public class DatabaseConnection {
         }
         return dataSource.getConnection();
     }
-
-    public static void main(String[] args) throws SQLException {
-        Connection connection = DatabaseConnection.getConnection();
-
-        connection.close();
-        dataSource.close();
-    }
 }

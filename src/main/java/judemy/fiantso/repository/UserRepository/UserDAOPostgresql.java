@@ -1,4 +1,4 @@
-package judemy.fiantso.DAO.UsersDAO;
+package judemy.fiantso.DAO.UserRepository;
 
 import judemy.fiantso.connection.DatabaseConnection;
 import judemy.fiantso.entities.Users;

@@ -1,29 +1,36 @@
 package judemy.fiantso.connection;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static Connection connection;
+    private static HikariDataSource dataSource;
 
     private DatabaseConnection() {
-        try {
-            connection = DriverManager.getConnection(Credentials.DATABASE_URL, Credentials.DATABASE_USER, Credentials.DATABASE_PASSWORD);
-            System.out.println("Connected successfully !");
-        } catch (SQLException e) {
-            System.out.println("There is an error while connecting to the database !" + e.getMessage());
-        }
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(Credentials.DATABASE_URL);
+        config.setUsername(Credentials.DATABASE_USER);
+        config.setPassword(Credentials.DATABASE_PASSWORD);
+
+        dataSource = new HikariDataSource(config);
+
+        System.out.println("Connection pool initialized !");
     }
 
-    public static Connection getConnection() {
-        if (connection == null) {
+    public static Connection getConnection() throws SQLException {
+        if (dataSource == null) {
             new DatabaseConnection();
         }
-        return connection;
+        return dataSource.getConnection();
     }
 
-    public static void main(String[] args) {
-        DatabaseConnection.getConnection();
+    public static void main(String[] args) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+
+        connection.close();
+        dataSource.close();
     }
 }

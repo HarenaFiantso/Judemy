@@ -9,13 +9,10 @@ public class DatabaseConnection {
 
     private DatabaseConnection() {
         try {
-            connection = DriverManager.getConnection(
-                    Credentials.DATABASE_URL,
-                    Credentials.DATABASE_USER,
-                    Credentials.DATABASE_PASSWORD
-            );
+            connection = DriverManager.getConnection(Credentials.DATABASE_URL, Credentials.DATABASE_USER, Credentials.DATABASE_PASSWORD);
+            System.out.println("Connected successfully !");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There is an error while connecting to the database !" + e.getMessage());
         }
     }
 
@@ -24,5 +21,9 @@ public class DatabaseConnection {
             new DatabaseConnection();
         }
         return connection;
+    }
+
+    public static void main(String[] args) {
+        DatabaseConnection.getConnection();
     }
 }

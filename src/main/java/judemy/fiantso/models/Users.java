@@ -1,8 +1,9 @@
-package judemy.fiantso.entities;
+package judemy.fiantso.models;
 
 import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Getter
 @Setter
 @ToString
@@ -12,4 +13,5 @@ public class Users {
     private String name;
     private String email;
     private String password;
+
 }

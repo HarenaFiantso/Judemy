@@ -63,7 +63,11 @@ public class UserDAOPostgresql implements UsersDAO {
     }
 
     public static void main(String[] args) throws SQLException {
-        Users fiantso = new Users(1, "Fiantso", "hei.fiantso@gmail.com", "1234");
+        Users fiantso = new Users(
+                1,
+                "Fiantso",
+                "hei.fiantso@gmail.com",
+                "1234");
         UsersDAO dao = new UserDAOPostgresql(DatabaseConnection.getConnection());
         System.out.println(dao.findAll());
     }

@@ -10,9 +10,9 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost/judemy",
-                    "postgres",
-                    "tsy tadidiko"
+                    Credentials.DATABASE_URL,
+                    Credentials.DATABASE_USER,
+                    Credentials.DATABASE_PASSWORD
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -23,7 +23,6 @@ public class DatabaseConnection {
         if (connection == null) {
             new DatabaseConnection();
         }
-
         return connection;
     }
 }

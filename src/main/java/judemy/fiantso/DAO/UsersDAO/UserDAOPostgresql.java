@@ -1,10 +1,10 @@
 package judemy.fiantso.DAO.UsersDAO;
 
+import judemy.fiantso.connection.DatabaseConnection;
 import judemy.fiantso.entities.Users;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOPostgresql implements UsersDAO {
@@ -24,15 +24,32 @@ public class UserDAOPostgresql implements UsersDAO {
             statement.setString(3, u.getPassword());
 
             statement.executeUpdate();
-            System.out.println("The data is inserted successfully ! ");
+            System.out.println("The data insert query is executed successfully ! ");
         } catch (SQLException e) {
-            System.out.println("There is an error while trying to insert the data : " + e.getMessage());
+            System.out.println("There is an error while executing the insert query : " + e.getMessage());
         }
     }
 
     @Override
     public List<Users> findAll() {
-        return null;
+        String selectQuery = "SELECT * FROM users";
+        List<Users> users = new ArrayList<>();
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            while (resultSet.next()) {
+                users.add(new Users(
+                        resultSet.getInt("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")));
+            }
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select query : " + e.getMessage());
+        }
+
+        return users;
     }
 
     @Override
@@ -43,5 +60,11 @@ public class UserDAOPostgresql implements UsersDAO {
     @Override
     public void delete(int id) {
 
+    }
+
+    public static void main(String[] args) {
+        Users fiantso = new Users(1, "Fiantso", "hei.fiantso@gmail.com", "1234");
+        UsersDAO dao = new UserDAOPostgresql(DatabaseConnection.getConnection());
+        System.out.println(dao.findAll());
     }
 }

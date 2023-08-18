@@ -8,6 +8,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class Users {
+    private int user_id;
     private String name;
     private String email;
     private String password;

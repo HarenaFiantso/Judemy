@@ -1,7 +1,7 @@
-package judemy.fiantso.DAO.UserRepository;
+package judemy.fiantso.repository.UserRepository;
 
 import judemy.fiantso.connection.DatabaseConnection;
-import judemy.fiantso.entities.Users;
+import judemy.fiantso.models.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,22 +53,30 @@ public class UserDAOPostgresql implements UsersDAO {
     }
 
     @Override
-    public List<Users> findById(int id) {
-        return null;
+    public Users findById(int id) {
+        String selectQuery = "SELECT * FROM users WHERE user_id = ?";
+        Users user = new Users();
+
+        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            System.out.println("The data select query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select query : " + e.getMessage());
+        }
+
+        return user;
     }
 
     @Override
     public void delete(int id) {
-
-    }
-
-    public static void main(String[] args) throws SQLException {
-        Users fiantso = new Users(
-                1,
-                "Fiantso",
-                "hei.fiantso@gmail.com",
-                "1234");
-        UsersDAO dao = new UserDAOPostgresql(DatabaseConnection.getConnection());
-        System.out.println(dao.findAll());
+        String deleteQuery = "DELETE FROM users WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            System.out.println("The data delete query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the delete query : " + e.getMessage());
+        }
     }
 }

@@ -1,6 +1,6 @@
-package judemy.fiantso.DAO.UserRepository;
+package judemy.fiantso.repository.UserRepository;
 
-import judemy.fiantso.entities.Users;
+import judemy.fiantso.models.Users;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public interface UsersDAO {
 
     List<Users> findAll();
 
-    List<Users> findById(int id);
+    Users findById(int id);
 
     void delete(int id);
 }

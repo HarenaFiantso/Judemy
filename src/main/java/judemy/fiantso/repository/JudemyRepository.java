@@ -1,7 +1,5 @@
 package judemy.fiantso.repository;
 
-import judemy.fiantso.models.Users;
-
 import java.util.List;
 
 public interface JudemyRepository<T> {
@@ -11,7 +9,8 @@ public interface JudemyRepository<T> {
 
     List<T> getAll();
 
-    Users update(T model);
+    T update(T model);
 
     void delete(Long id);
+
 }

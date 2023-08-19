@@ -75,7 +75,7 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
                         resultSet.getString("password")
                 ));
             }
-            System.out.println("The select statement is a success ! ");
+            System.out.println("The data select query is executed successfully !");
         } catch (SQLException e) {
             System.out.println("There is an error while executing the select query : " + e.getMessage());
         }
@@ -102,9 +102,16 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
         return model;
     }
 
-    @Override
     public void delete(Long id) {
+        String deleteQuery = "DELETE FROM users WHERE user_id = ?";
 
+        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+            System.out.println("The data delete query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the delete query : " + e.getMessage());
+        }
     }
 
 }

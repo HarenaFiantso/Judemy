@@ -11,7 +11,7 @@ public interface JudemyRepository<T> {
 
     List<T> getAll();
 
-    void update(T model);
+    Users update(T model);
 
     void delete(Long id);
 }

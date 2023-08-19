@@ -3,7 +3,6 @@ package judemy.fiantso.repository.UserRepository;
 import judemy.fiantso.models.Users;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -85,8 +84,22 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
     }
 
     @Override
-    public void update(Users model) {
+    public Users update(Users model) {
+        String updateQuery = "UPDATE users SET name = ?, email = ?, password = ? WHERE user_id = ?";
 
+        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            statement.setString(1, model.getName());
+            statement.setString(2, model.getEmail());
+            statement.setString(3, model.getPassword());
+            statement.setLong(4, model.getUserId());
+
+            statement.executeUpdate();
+            System.out.println("The data update query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the update query : " + e.getMessage());
+        }
+
+        return model;
     }
 
     @Override

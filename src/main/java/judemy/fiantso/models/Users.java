@@ -1,17 +1,11 @@
 package judemy.fiantso.models;
 
-import lombok.*;
+import lombok.Data;
 
-@AllArgsConstructor
-@NoArgsConstructor(force = true)
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class Users {
-    private int user_id;
+    private Long userId;
     private String name;
     private String email;
     private String password;
-
 }

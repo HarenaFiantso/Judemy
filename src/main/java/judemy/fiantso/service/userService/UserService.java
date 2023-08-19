@@ -1,14 +1,18 @@
 package judemy.fiantso.service.userService;
 
+import judemy.fiantso.models.Enrollments;
 import judemy.fiantso.models.Users;
 
 import java.util.List;
 
 public interface UserService {
-    List<Users> getUsers();
-    Users getUser(int id);
-    Users addUser(Users u);
-    Users updateUser(Users u);
+    Users createUser(Users user);
 
-    void deleteUser(Users u);
+    List<Users> getAllUsers();
+
+    Users getUserById(Long userId);
+
+    void updateUser(Users user);
+
+    void deleteUser(Long userId);
 }

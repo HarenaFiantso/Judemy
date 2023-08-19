@@ -1,39 +1,41 @@
 package judemy.fiantso.service.userService;
 
 import judemy.fiantso.models.Users;
-import judemy.fiantso.repository.UserRepository.UsersDAO;
+import judemy.fiantso.repository.JudemyRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImplementation implements UserService {
-    private UsersDAO repository;
+    private final JudemyRepository<Users> userRepository;
 
-    public UserServiceImplementation(UsersDAO repository) {
-        this.repository = repository;
+    public UserServiceImplementation(JudemyRepository<Users> userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public List<Users> getUsers() {
-        return this.repository.findAll();
+    public Users createUser(Users user) {
+        return userRepository.create(user);
     }
 
     @Override
-    public Users getUser(int id) {
-        return this.repository.findById(id);
+    public List<Users> getAllUsers() {
+        return userRepository.getAll();
     }
 
     @Override
-    public Users addUser(Users u) {
-        return this.repository.insert(u);
+    public Users getUserById(Long userId) {
+        return userRepository.getById(userId);
     }
 
     @Override
-    public Users updateUser(Users u) {
-        return this.repository.update(u);
+    public void updateUser(Users user) {
+        userRepository.update(user);
     }
 
     @Override
-    public void deleteUser(Users u) {
-        this.repository.delete(u);
+    public void deleteUser(Long userId) {
+        userRepository.delete(userId);
     }
 }

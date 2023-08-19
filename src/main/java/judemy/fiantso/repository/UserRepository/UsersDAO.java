@@ -5,11 +5,13 @@ import judemy.fiantso.models.Users;
 import java.util.List;
 
 public interface UsersDAO {
-    void insert(Users u);
+    Users insert(Users u);
 
     List<Users> findAll();
 
-    Users findById(int id);
+    Users findById(int u);
 
-    void delete(int id);
+    Users update(Users u);
+
+    void delete(Users u);
 }

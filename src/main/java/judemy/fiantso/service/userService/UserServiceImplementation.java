@@ -2,7 +2,6 @@ package judemy.fiantso.service.userService;
 
 import judemy.fiantso.models.Users;
 import judemy.fiantso.repository.JudemyRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,13 +30,12 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public ResponseEntity<Users> updateUser(Users user) {
-        userRepository.update(user);
-        return null;
+    public Users updateUser(Users user) {
+        return userRepository.update(user);
     }
 
     @Override
-    public void deleteUser(Long userId) {
-        userRepository.delete(userId);
+    public void deleteUser(Long user) {
+        userRepository.delete(user);
     }
 }

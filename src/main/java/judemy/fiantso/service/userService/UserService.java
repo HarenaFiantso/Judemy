@@ -1,7 +1,7 @@
 package judemy.fiantso.service.userService;
 
-import judemy.fiantso.models.Enrollments;
 import judemy.fiantso.models.Users;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface UserService {
 
     Users getUserById(Long userId);
 
-    void updateUser(Users user);
+    ResponseEntity<Users> updateUser(Users user);
 
     void deleteUser(Long userId);
 }

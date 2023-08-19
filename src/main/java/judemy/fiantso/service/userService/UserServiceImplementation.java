@@ -2,6 +2,7 @@ package judemy.fiantso.service.userService;
 
 import judemy.fiantso.models.Users;
 import judemy.fiantso.repository.JudemyRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public void updateUser(Users user) {
+    public ResponseEntity<Users> updateUser(Users user) {
         userRepository.update(user);
+        return null;
     }
 
     @Override

@@ -12,7 +12,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static HikariDataSource dataSource;
 
-    private DatabaseConnection() {
+
+    public DatabaseConnection() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(Credentials.DATABASE_URL);
         config.setUsername(Credentials.DATABASE_USER);

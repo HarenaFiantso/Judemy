@@ -3,9 +3,11 @@ package judemy.fiantso.repository.UserRepository;
 import judemy.fiantso.models.Users;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -36,12 +38,50 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
 
     @Override
     public Users getById(Long id) {
-        return null;
+        String selectQuery = "SELECT * FROM users WHERE user_id = ?";
+        Users user = new Users();
+
+        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            user = new Users(
+                    resultSet.getLong("user_id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("password")
+            );
+            System.out.println("The data select id query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select by id query : " + e.getMessage());
+        }
+
+        return user;
     }
 
     @Override
     public List<Users> getAll() {
-        return null;
+        String selectQuery = "SELECT * FROM users";
+        List<Users> users = new ArrayList<>();
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            while (resultSet.next()) {
+                users.add(new Users(
+                        resultSet.getLong("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")
+                ));
+            }
+            System.out.println("The select statement is a success ! ");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select query : " + e.getMessage());
+        }
+
+        return users;
     }
 
     @Override

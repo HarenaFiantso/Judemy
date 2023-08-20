@@ -2,11 +2,15 @@ package judemy.fiantso.repository.CourseRepository;
 
 import judemy.fiantso.models.Courses;
 import judemy.fiantso.repository.JudemyRepository;
+import lombok.Getter;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Repository
 public class CourseRepositoryImplementation implements JudemyRepository<Courses> {
     private final Connection connection;
 

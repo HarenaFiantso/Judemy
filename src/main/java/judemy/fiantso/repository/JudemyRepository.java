@@ -3,7 +3,7 @@ package judemy.fiantso.repository;
 import java.util.List;
 
 public interface JudemyRepository<T> {
-    T create(T user);
+    T create(T model);
 
     T getById(Long id);
 

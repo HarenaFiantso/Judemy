@@ -84,14 +84,14 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
     }
 
     @Override
-    public Users update(Users model) {
+    public Users update(Users user) {
         String updateQuery = "UPDATE users SET name = ?, email = ?, password = ? WHERE user_id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setString(1, model.getName());
-            statement.setString(2, model.getEmail());
-            statement.setString(3, model.getPassword());
-            statement.setLong(4, model.getUserId());
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.setLong(4, user.getUserId());
 
             statement.executeUpdate();
             System.out.println("The data update query is executed successfully !");
@@ -99,7 +99,7 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
             System.out.println("There is an error while executing the update query : " + e.getMessage());
         }
 
-        return model;
+        return user;
     }
 
     public void delete(Long id) {

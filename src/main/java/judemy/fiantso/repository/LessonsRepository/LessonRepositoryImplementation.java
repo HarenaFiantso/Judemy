@@ -104,6 +104,14 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public void delete(Long id) {
+        String deleteQuery = "DELETE FROM lessons WHERE lesson_id = ?";
 
+        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+            System.out.println("The data delete query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the delete query : " + e.getMessage());
+        }
     }
 }

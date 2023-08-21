@@ -5,6 +5,7 @@ import judemy.fiantso.repository.JudemyRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -35,7 +36,27 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public Lessons getById(Long id) {
-        return null;
+        String selectQuery = "SELECT * FROM lessons WHERE lesson_id = ?";
+        Lessons lesson = new Lessons();
+
+        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            lesson = new Lessons(
+                    resultSet.getLong("lesson_id"),
+                    resultSet.getInt("course_id"),
+                    resultSet.getString("title"),
+                    resultSet.getString("description"),
+                    resultSet.getInt("display_order")
+            );
+            System.out.println("The data select id query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select by id query : " + e.getMessage());
+        }
+
+        return lesson;
     }
 
     @Override

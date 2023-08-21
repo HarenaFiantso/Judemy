@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(force = true)
 public class Lessons {
     private Long lessonId;
-    private Courses course;
+    private int course;
     private String title;
     private String description;
     private Integer displayOrder;

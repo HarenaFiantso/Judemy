@@ -3,7 +3,6 @@ package judemy.fiantso.repository.EnrollmentRepository;
 import judemy.fiantso.models.Enrollments;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

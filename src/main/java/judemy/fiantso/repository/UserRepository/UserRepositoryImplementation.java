@@ -54,7 +54,12 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
 
-            user = new Users(resultSet.getLong("user_id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"));
+            user = new Users(
+                    resultSet.getLong("user_id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("password")
+            );
             logger.info("Data select by id query executed successfully!");
         } catch (SQLException e) {
             logger.error("Error executing select by id query: {}", e.getMessage());
@@ -71,7 +76,12 @@ public class UserRepositoryImplementation implements JudemyRepository<Users> {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                users.add(new Users(resultSet.getLong("user_id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password")));
+                users.add(new Users(
+                        resultSet.getLong("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")
+                ));
             }
             logger.info("Data select query executed successfully!");
         } catch (SQLException e) {

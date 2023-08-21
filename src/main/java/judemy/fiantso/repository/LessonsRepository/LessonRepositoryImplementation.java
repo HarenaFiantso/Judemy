@@ -3,10 +3,8 @@ package judemy.fiantso.repository.LessonsRepository;
 import judemy.fiantso.models.Lessons;
 import judemy.fiantso.repository.JudemyRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LessonRepositoryImplementation implements JudemyRepository<Lessons> {
@@ -61,7 +59,27 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public List<Lessons> getAll() {
-        return null;
+        String selectQuery = "SELECT * FROM lessons";
+        List<Lessons> lessons = new ArrayList<>();
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            while (resultSet.next()) {
+                lessons.add(new Lessons(
+                        resultSet.getLong("lesson_id"),
+                        resultSet.getInt("course_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("display_order")
+                ));
+            }
+            System.out.println("The data select query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the select query : " + e.getMessage());
+        }
+
+        return lessons;
     }
 
     @Override

@@ -2,13 +2,15 @@ package judemy.fiantso.service.LessonService;
 
 import judemy.fiantso.models.Lessons;
 import judemy.fiantso.repository.JudemyRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class LessonRepositoryImplementation implements LessonRepository {
+@Service
+public class LessonServiceImplementation implements LessonService {
     private final JudemyRepository<Lessons> lessonRepository;
 
-    public LessonRepositoryImplementation(JudemyRepository<Lessons> lessonRepository) {
+    public LessonServiceImplementation(JudemyRepository<Lessons> lessonRepository) {
         this.lessonRepository = lessonRepository;
     }
 

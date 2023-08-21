@@ -4,7 +4,7 @@ import judemy.fiantso.models.Lessons;
 
 import java.util.List;
 
-public interface LessonRepository {
+public interface LessonService {
     Lessons createLesson(Lessons lesson);
     List<Lessons> getAllLessons();
     Lessons getLessonById(Long lessonId);

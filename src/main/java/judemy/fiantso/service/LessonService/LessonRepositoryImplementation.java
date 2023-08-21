@@ -14,26 +14,26 @@ public class LessonRepositoryImplementation implements LessonRepository {
 
     @Override
     public Lessons createLesson(Lessons lesson) {
-        return null;
+        return lessonRepository.create(lesson);
     }
 
     @Override
     public List<Lessons> getAllLessons() {
-        return null;
+        return lessonRepository.getAll();
     }
 
     @Override
     public Lessons getLessonById(Long lessonId) {
-        return null;
+        return lessonRepository.getById(lessonId);
     }
 
     @Override
     public Lessons updateLesson(Lessons lesson) {
-        return null;
+        return lessonRepository.update(lesson);
     }
 
     @Override
     public void deleteLesson(Long lesson) {
-
+        this.lessonRepository.delete(lesson);
     }
 }

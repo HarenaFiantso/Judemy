@@ -3,7 +3,6 @@ package judemy.fiantso.repository.QuizRepository;
 import judemy.fiantso.models.Quizzes;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,7 @@ import java.util.List;
 @Repository
 public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
     private static final Logger logger = LoggerFactory.getLogger(QuizRepositoryImplementation.class);
-    
+
     private final Connection connection;
     private static final String INSERT_QUERY = "INSERT INTO quizzes (lesson_id, question, option1, option2, option3, option4, correct_answer) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM quizzes";

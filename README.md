@@ -63,8 +63,7 @@ public class Credentials {
 4. Run the application ✅️
 
 **Access the Judemy API by sending HTTP requests to the appropriate endpoints.
-Use API documentation or tools like Postman to interact with the API.
-Visit the frontend repository (link) to access the user interface.**
+Use API documentation or tools like Postman to interact with the API.**
 
 # Contributing
 

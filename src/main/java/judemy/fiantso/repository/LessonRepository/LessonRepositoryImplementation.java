@@ -3,16 +3,27 @@ package judemy.fiantso.repository.LessonRepository;
 import judemy.fiantso.models.Lessons;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Repository
 public class LessonRepositoryImplementation implements JudemyRepository<Lessons> {
+    private static final Logger logger = LoggerFactory.getLogger(LessonRepositoryImplementation.class);
+
     private final Connection connection;
+    private static final String INSERT_QUERY = "INSERT INTO lessons (course_id, title, description, display_order) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM lessons";
+    private static final String UPDATE_QUERY = "UPDATE lessons SET course_id = ?, title = ?, description = ?, display_order = ? WHERE lesson_id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM lessons WHERE lesson_id = ?";
 
     public LessonRepositoryImplementation(Connection connection) {
         this.connection = connection;
@@ -20,42 +31,40 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public Lessons create(Lessons lesson) {
-        String insertQuery = "INSERT INTO lessons (course_id, title, description, display_order) VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
             statement.setInt(1, lesson.getCourseId());
             statement.setString(2, lesson.getTitle());
             statement.setString(3, lesson.getDescription());
             statement.setInt(4, lesson.getDisplayOrder());
 
             statement.executeUpdate();
-            System.out.println("The data insert query is executed successfully ! ");
+            logger.info("Data insert query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the insert query : " + e.getMessage());
+            logger.error("Error executing insert query: {}", e.getMessage());
         }
         return lesson;
     }
 
     @Override
     public Lessons getById(Long id) {
-        String selectQuery = "SELECT * FROM lessons WHERE lesson_id = ?";
+        String selectByIdQuery = "SELECT * FROM lessons WHERE lesson_id = ?";
         Lessons lesson = new Lessons();
 
-        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(selectByIdQuery)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            lesson = new Lessons(
-                    resultSet.getLong("lesson_id"),
-                    resultSet.getInt("course_id"),
-                    resultSet.getString("title"),
-                    resultSet.getString("description"),
-                    resultSet.getInt("display_order")
-            );
-            System.out.println("The data select id query is executed successfully !");
+            if (resultSet.next()) {
+                lesson = new Lessons(
+                        resultSet.getLong("lesson_id"),
+                        resultSet.getInt("course_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("display_order")
+                );
+            }
+            logger.info("Data select by id query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the select by id query : " + e.getMessage());
+            logger.error("Error executing select by id query: {}", e.getMessage());
         }
 
         return lesson;
@@ -63,12 +72,10 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public List<Lessons> getAll() {
-        String selectQuery = "SELECT * FROM lessons";
         List<Lessons> lessons = new ArrayList<>();
 
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(selectQuery);
-
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 lessons.add(new Lessons(
                         resultSet.getLong("lesson_id"),
@@ -78,9 +85,9 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
                         resultSet.getInt("display_order")
                 ));
             }
-            System.out.println("The data select query is executed successfully !");
+            logger.info("Data select query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the select query : " + e.getMessage());
+            logger.error("Error executing select query: {}", e.getMessage());
         }
 
         return lessons;
@@ -88,9 +95,7 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public Lessons update(Lessons lesson) {
-        String updateQuery = "UPDATE lessons SET course_id = ?, title = ?, description = ?, display_order = ? WHERE lesson_id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setInt(1, lesson.getCourseId());
             statement.setString(2, lesson.getTitle());
             statement.setString(3, lesson.getDescription());
@@ -98,9 +103,9 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
             statement.setLong(5, lesson.getLessonId());
 
             statement.executeUpdate();
-            System.out.println("The data update query is executed successfully !");
+            logger.info("Data update query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the update query : " + e.getMessage());
+            logger.error("Error executing update query: {}", e.getMessage());
         }
 
         return lesson;
@@ -108,14 +113,12 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
 
     @Override
     public void delete(Long id) {
-        String deleteQuery = "DELETE FROM lessons WHERE lesson_id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setLong(1, id);
             statement.executeUpdate();
-            System.out.println("The data delete query is executed successfully !");
+            logger.info("Data delete query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the delete query : " + e.getMessage());
+            logger.error("Error executing delete query: {}", e.getMessage());
         }
     }
 }

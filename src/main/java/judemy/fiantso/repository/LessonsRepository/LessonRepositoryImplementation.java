@@ -83,8 +83,23 @@ public class LessonRepositoryImplementation implements JudemyRepository<Lessons>
     }
 
     @Override
-    public Lessons update(Lessons model) {
-        return null;
+    public Lessons update(Lessons lesson) {
+        String updateQuery = "UPDATE lessons SET course_id = ?, title = ?, description = ?, display_order = ? WHERE lesson_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            statement.setInt(1, lesson.getCourseId());
+            statement.setString(2, lesson.getTitle());
+            statement.setString(3, lesson.getDescription());
+            statement.setInt(4, lesson.getDisplayOrder());
+            statement.setLong(5, lesson.getLessonId());
+
+            statement.executeUpdate();
+            System.out.println("The data update query is executed successfully !");
+        } catch (SQLException e) {
+            System.out.println("There is an error while executing the update query : " + e.getMessage());
+        }
+
+        return lesson;
     }
 
     @Override

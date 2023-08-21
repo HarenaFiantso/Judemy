@@ -71,7 +71,7 @@ public class VideoRepositoryImplementation implements JudemyRepository<Videos> {
 
             while (resultSet.next()) {
                 videos.add(new Videos(
-                        resultSet.getLong("videos_id"),
+                        resultSet.getLong("video_id"),
                         resultSet.getInt("lesson_id"),
                         resultSet.getString("title"),
                         resultSet.getString("url"),

@@ -46,7 +46,6 @@ public class UserRepositoryImplementationTest {
 
     @Test
     public void testGetUserById() throws Exception {
-        Users user = new Users();
         when(connection.prepareStatement(any())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);

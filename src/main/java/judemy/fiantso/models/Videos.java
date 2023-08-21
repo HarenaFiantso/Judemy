@@ -12,5 +12,9 @@ public class Videos {
     private int lessonId;
     private String title;
     private String url;
-    private Integer duration;
+    private Integer duration = 0;
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
 }

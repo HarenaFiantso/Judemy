@@ -13,4 +13,8 @@ public class Lessons {
     private String title;
     private String description;
     private Integer displayOrder;
+
+    public Integer getDisplayOrder() {
+        return displayOrder != null ? displayOrder.intValue() : 0;
+    }
 }

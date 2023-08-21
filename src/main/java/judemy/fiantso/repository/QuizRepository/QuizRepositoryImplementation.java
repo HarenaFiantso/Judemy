@@ -3,16 +3,27 @@ package judemy.fiantso.repository.QuizRepository;
 import judemy.fiantso.models.Quizzes;
 import judemy.fiantso.repository.JudemyRepository;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Repository
 public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
+    private static final Logger logger = LoggerFactory.getLogger(QuizRepositoryImplementation.class);
+
     private final Connection connection;
+    private static final String INSERT_QUERY = "INSERT INTO quizzes (lesson_id, question, option1, option2, option3, option4, correct_answer) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM quizzes";
+    private static final String UPDATE_QUERY = "UPDATE quizzes SET lesson_id = ?, question = ?, option1 = ?, option2 = ?, option3 = ?, option4 = ?, correct_answer = ? WHERE quiz_id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM quizzes WHERE quiz_id = ?";
 
     public QuizRepositoryImplementation(Connection connection) {
         this.connection = connection;
@@ -20,42 +31,40 @@ public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
 
     @Override
     public Quizzes create(Quizzes quiz) {
-        String insertQuery = "INSERT INTO quizzes (lesson_id, question, option1, option2, option3, option4, correct_answer) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            statement(quiz, statement);
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
+            setQuizParameters(statement, quiz);
 
             statement.executeUpdate();
-            System.out.println("The data insert query is executed successfully ! ");
+            logger.info("Data insert query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the insert query : " + e.getMessage());
+            logger.error("Error executing insert query: {}", e.getMessage());
         }
         return quiz;
     }
 
     @Override
     public Quizzes getById(Long id) {
-        String selectQuery = "SELECT * FROM quizzes WHERE quiz_id = ?";
+        String selectByIdQuery = "SELECT * FROM quizzes WHERE quiz_id = ?";
         Quizzes quiz = new Quizzes();
 
-        try (PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(selectByIdQuery)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            quiz = new Quizzes(
-                    resultSet.getLong("quiz_id"),
-                    resultSet.getInt("lesson_id"),
-                    resultSet.getString("question"),
-                    resultSet.getString("option1"),
-                    resultSet.getString("option2"),
-                    resultSet.getString("option3"),
-                    resultSet.getString("option4"),
-                    resultSet.getInt("correct_answer")
-            );
-            System.out.println("The data select id query is executed successfully !");
+            if (resultSet.next()) {
+                quiz = new Quizzes(
+                        resultSet.getLong("quiz_id"),
+                        resultSet.getInt("lesson_id"),
+                        resultSet.getString("question"),
+                        resultSet.getString("option1"),
+                        resultSet.getString("option2"),
+                        resultSet.getString("option3"),
+                        resultSet.getString("option4"),
+                        resultSet.getInt("correct_answer")
+                );
+            }
+            logger.info("Data select by id query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the select by id query : " + e.getMessage());
+            logger.error("Error executing select by id query: {}", e.getMessage());
         }
 
         return quiz;
@@ -63,12 +72,10 @@ public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
 
     @Override
     public List<Quizzes> getAll() {
-        String selectQuery = "SELECT * FROM quizzes";
         List<Quizzes> quizzes = new ArrayList<>();
 
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(selectQuery);
-
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_QUERY)) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 quizzes.add(new Quizzes(
                         resultSet.getLong("quiz_id"),
@@ -81,8 +88,9 @@ public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
                         resultSet.getInt("correct_answer")
                 ));
             }
+            logger.info("Data select query executed successfully!");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error("Error executing select query: {}", e.getMessage());
         }
 
         return quizzes;
@@ -90,31 +98,30 @@ public class QuizRepositoryImplementation implements JudemyRepository<Quizzes> {
 
     @Override
     public Quizzes update(Quizzes quiz) {
-        String updateQuery = "UPDATE quizzes SET lesson_id = ?, question = ?, option1 = ?, option2 = ?, option3 = ?, option4 = ?, correct_answer = ? WHERE quiz_id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement(quiz, statement);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+            setQuizParameters(statement, quiz);
             statement.setLong(8, quiz.getQuizId());
+
+            statement.executeUpdate();
+            logger.info("Data update query executed successfully!");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error("Error executing update query: {}", e.getMessage());
         }
         return quiz;
     }
 
     @Override
     public void delete(Long id) {
-        String deleteQuery = "DELETE FROM quizzes WHERE quiz_id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setLong(1, id);
             statement.executeUpdate();
-            System.out.println("The data delete query is executed successfully !");
+            logger.info("Data delete query executed successfully!");
         } catch (SQLException e) {
-            System.out.println("There is an error while executing the delete query : " + e.getMessage());
+            logger.error("Error executing delete query: {}", e.getMessage());
         }
     }
 
-    private void statement(Quizzes quiz, PreparedStatement statement) throws SQLException {
+    private void setQuizParameters(PreparedStatement statement, Quizzes quiz) throws SQLException {
         statement.setInt(1, quiz.getLessonId());
         statement.setString(2, quiz.getQuestion());
         statement.setString(3, quiz.getOption1());

@@ -3,13 +3,13 @@ package judemy.fiantso.judemy.ServiceTests;
 import judemy.fiantso.models.Users;
 import judemy.fiantso.repository.JudemyRepository;
 import judemy.fiantso.service.userService.UserServiceImplementation;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class UserServiceImplementationTest {
@@ -17,7 +17,7 @@ public class UserServiceImplementationTest {
     private UserServiceImplementation userService;
     private JudemyRepository<Users> userRepositoryMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         userRepositoryMock = mock(JudemyRepository.class);
         userService = new UserServiceImplementation(userRepositoryMock);

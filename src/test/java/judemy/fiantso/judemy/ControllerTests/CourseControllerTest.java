@@ -3,8 +3,8 @@ package judemy.fiantso.judemy.ControllerTests;
 import judemy.fiantso.controller.CourseController;
 import judemy.fiantso.models.Courses;
 import judemy.fiantso.service.courseService.CourseService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,7 +24,7 @@ public class CourseControllerTest {
     @Mock
     private CourseService courseServiceMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         courseServiceMock = mock(CourseService.class);
         CourseController courseController = new CourseController(courseServiceMock);

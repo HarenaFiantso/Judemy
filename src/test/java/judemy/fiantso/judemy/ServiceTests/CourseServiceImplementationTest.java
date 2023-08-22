@@ -4,13 +4,13 @@ import judemy.fiantso.models.Courses;
 import judemy.fiantso.repository.JudemyRepository;
 import judemy.fiantso.service.courseService.CourseService;
 import judemy.fiantso.service.courseService.CourseServiceImplementation;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class CourseServiceImplementationTest {
@@ -18,7 +18,7 @@ public class CourseServiceImplementationTest {
     private CourseService courseService;
     private JudemyRepository<Courses> courseRepositoryMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         courseRepositoryMock = mock(JudemyRepository.class);
         courseService = new CourseServiceImplementation(courseRepositoryMock);

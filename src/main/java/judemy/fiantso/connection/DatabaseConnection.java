@@ -1,17 +1,15 @@
 package judemy.fiantso.connection;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private final DataSource dataSource;
+    private HikariDataSource dataSource;
 
-    public DatabaseConnection(DataSource dataSource) {
+    public DatabaseConnection(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
 

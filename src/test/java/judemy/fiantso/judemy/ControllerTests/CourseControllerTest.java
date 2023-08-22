@@ -62,7 +62,6 @@ public class CourseControllerTest {
         Courses course = new Courses();
         course.setCourseId(courseId);
 
-        // Configurer le mock pour renvoyer l'objet course lors de l'appel à getCourseById
         when(courseServiceMock.getCourseById(courseId)).thenReturn(course);
 
         mockMvc.perform(get("/courses/{courseId}", courseId))
